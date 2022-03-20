@@ -98,13 +98,12 @@ public class CsvUtility {
             f.put("No. de caja", "dc.format");
             f.put("Secuencia de expedientes", "dc.identifier.isbn");
             f.put("No. de expediente", "dc.identifier");
-            f.put("Contenido", "dc:description");
-            f.put("Fecha", "dc:date");
+            f.put("Contenido", "dc.description");
+            f.put("Fecha", "dc.date");
             f.put("No. de Ley/Resolución/Decreto", "dc.identifier.govdoc");
             f.put("Observaciones", "dc.description.tableofcontents");
             f.put("Tipo de Iniciativa", "dc.identifier.other");
             f.put("Resolución / contrato", "dc.type");
-
             f.put("Titulo", "dc.title");
             f.put("Proponentes", "dc.provenance");
             f.put("Comision", "dc.subject");

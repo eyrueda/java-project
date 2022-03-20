@@ -1,7 +1,14 @@
 # CSV Utility
 
 #### Steps to use the tool
+cd java-project
+
+mvn package
+
+java -jar target/java-project-1.0-SNAPSHOT.jar
+
 -This app use the path where the jar is located.
+
 ![img.png](img.png)
 
 
