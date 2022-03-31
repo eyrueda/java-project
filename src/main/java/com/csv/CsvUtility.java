@@ -42,17 +42,13 @@ public class CsvUtility {
 
     private void createFilter() {
         filter = file -> {
-            if (Arrays.stream(validExtensions).anyMatch(entry -> file.getName().endsWith(entry))) {
-                return true;
-            } else {
-                return false;
-            }
+            return Arrays.stream(validExtensions).anyMatch(entry -> file.getName().endsWith(entry));
         };
     }
 
     public Map<String, File> getFilesHM() {
         try {
-            for (File file : fileRoot.listFiles(this.filter)) {
+            for (File file : Objects.requireNonNull(fileRoot.listFiles(this.filter))) {
                 filesHM.put(file.getName(), file);
             }
         } catch (Exception e) {
@@ -61,7 +57,7 @@ public class CsvUtility {
         return filesHM;
     }
 
-    public void readInputCSV() throws Exception {
+    public void readInputCSV() {
         try{
             String csvPath = fileRoot.getPath() + "/" + csvInputName;
             FileReader fileReader = new FileReader(csvPath);
@@ -95,7 +91,7 @@ public class CsvUtility {
         try {
             LinkedHashMap<String, String> f = new LinkedHashMap<>();
             f.put("ID", "filename");
-            f.put("No. de caja", "dc.format");
+            f.put("No. de caja", "dc.identifier.issn");
             f.put("Secuencia de expedientes", "dc.identifier.isbn");
             f.put("No. de expediente", "dc.identifier");
             f.put("Contenido", "dc.description");
@@ -103,10 +99,10 @@ public class CsvUtility {
             f.put("No. de Ley/Resolución/Decreto", "dc.identifier.govdoc");
             f.put("Observaciones", "dc.description.tableofcontents");
             f.put("Tipo de Iniciativa", "dc.identifier.other");
-            f.put("Resolución / contrato", "dc.type");
+            f.put("Resolución / contrato", "dc.identifier.sici");
             f.put("Titulo", "dc.title");
             f.put("Proponentes", "dc.provenance");
-            f.put("Comision", "dc.subject");
+            f.put("Comision", "dc.publisher");
             f.put("Sesiones", "dc.description.sponsorship");
             String[] newHeaders = f.values().toArray(new String[0]);
 
@@ -165,8 +161,8 @@ public class CsvUtility {
 
     public int sanitizeDirectory() {
         pendingFilesHM = filesHM.entrySet().stream().
-                filter(x -> cleanCsvHM.containsKey(x.getKey()) == false).
-                collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
+                filter(x -> !cleanCsvHM.containsKey(x.getKey())).
+                collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         movePendingFiles();
         return pendingFilesHM.size();
     }
