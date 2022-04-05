@@ -76,10 +76,28 @@ public class CsvUtility {
             String[] linea = csvInputContent.get(i);
             //linea[3] is the "No de Expediente" field
             if (!linea[3].isBlank()) {//
-                String csvRowfilename = String.format("expediente%s.pdf", linea[3]);
+                String csvRowfilename = String.format("expediente%s.pdf", linea[3]);//expediente123.pdf
+                String underscore = String.format("expediente_%s.pdf", linea[3]);//expediente_123.pdf
+                String finalUnderscore = String.format("expediente%s_.pdf", linea[3]);//expediente123_.pdf
+                String soloNumero = String.format("%s.pdf", linea[3]);//123.pdf
+                String expNumero = String.format("exp_%s.pdf", linea[3]);//exp_123.pdf
+                String conS = String.format("espediente%s.pdf", linea[3]);//espediente123.pdf
+                String conMenos = String.format("expediente%s-.pdf", linea[3]);//expediente123-.pdf
                 //reducing size of the csv rows
                 if (filesHM.get(csvRowfilename) != null) {
                     cleanCsvHM.put(csvRowfilename, linea);
+                } else if (filesHM.get(underscore) != null) {
+                    cleanCsvHM.put(underscore, linea);
+                }else if (filesHM.get(finalUnderscore) != null) {
+                    cleanCsvHM.put(finalUnderscore, linea);
+                }else if (filesHM.get(soloNumero) != null) {
+                    cleanCsvHM.put(soloNumero, linea);
+                }else if (filesHM.get(expNumero) != null) {
+                    cleanCsvHM.put(expNumero, linea);
+                }else if (filesHM.get(conS) != null) {
+                    cleanCsvHM.put(conS, linea);
+                }else if (filesHM.get(conMenos) != null) {
+                    cleanCsvHM.put(conMenos, linea);
                 }
             }
         }
@@ -160,6 +178,8 @@ public class CsvUtility {
 
 
     public int sanitizeDirectory() {
+        //todos los nombres de archivos que esten en el map general filesHM y no esten en el map cleanCsvHM
+        // se guardan en pendingFilesHM y se mandan a mover para la carpeta pendingFiles
         pendingFilesHM = filesHM.entrySet().stream().
                 filter(x -> !cleanCsvHM.containsKey(x.getKey())).
                 collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
