@@ -4,6 +4,8 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -60,7 +62,7 @@ public class CsvUtility {
     public void readInputCSV() {
         try{
             String csvPath = fileRoot.getPath() + "/" + csvInputName;
-            FileReader fileReader = new FileReader(csvPath);
+            FileReader fileReader = new FileReader(csvPath, StandardCharsets.UTF_8);
             CSVReader csvReader = new CSVReader(fileReader);
             csvInputContent = csvReader.readAll();
             fileReader.close();
@@ -124,7 +126,7 @@ public class CsvUtility {
             f.put("Sesiones", "dc.description.sponsorship");
             String[] newHeaders = f.values().toArray(new String[0]);
 
-            writer = new CSVWriter(new FileWriter(fileRoot.getPath() + "/" + csvOutputName));
+            writer = new CSVWriter(new FileWriter(fileRoot.getPath() + "/" + csvOutputName, StandardCharsets.UTF_8));
             writer.writeNext(newHeaders);
             for (Map.Entry<String, String[]> entry : cleanCsvHM.entrySet()) {
                 //get the old csv row
